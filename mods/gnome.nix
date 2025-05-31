@@ -1,0 +1,58 @@
+{ config, pkgs, ... }:
+{
+  environment.systemPackages = with pkgs; [ gnomeExtensions.appindicator ];
+
+  services.udev.packages = with pkgs; [ pkgs.gnome-settings-daemon ];
+
+  services.xserver = {
+    enable = true;
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
+  };
+  # services.xserver.desktopManager.gnome = {
+  #   extraGSettingsOverrides = '' 
+  #     [org.gnome.desktop.input-sources] 
+  #     sources=[('xkb', 'br')] 
+  #   '';
+  #   extraGSettingsOverridePackages = [
+  #     pkgs.gsettings-desktop-schemas
+  #   ];
+  # };
+
+  environment.gnome.excludePackages = (with pkgs;
+    [
+      gnome-tour
+      gnome-connections
+      # snapshot
+      gnome-text-editor
+      epiphany
+      totem
+      gnome-music
+      geary
+      # simple-scan
+      seahorse
+      # gnome-weather
+      gnome-contacts
+      gnome-font-viewer
+      # gnome-maps
+      gnome-console
+      gnome-software
+      evince
+      yelp
+      # gnome-shell-extensions
+    ]);
+
+  # gvfs
+  services.gvfs.enable = true;
+
+  # Enable NixOS to use fonts from ~/.local/share/fonts
+  fonts.fontDir.enable = true;
+
+  # Enable polkit 
+  security.polkit.enable = true;
+
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.startx.enableGnomeKeyring = true;
+
+  # users.extraUsers.tapabratabarick.extraGroups = [ "audio" ];
+}
