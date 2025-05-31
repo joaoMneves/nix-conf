@@ -88,7 +88,7 @@
   ];
   services.flatpak.packages = [
     "app.zen_browser.zen"
-    "com.bitwarden.desktop"
+    # "com.bitwarden.desktop"
     "io.ente.auth"
   ];
 
