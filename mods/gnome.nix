@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 {
   environment.systemPackages = with pkgs; [ gnomeExtensions.appindicator ];
 
@@ -18,6 +18,21 @@
   #     pkgs.gsettings-desktop-schemas
   #   ];
   # };
+  # dconf.settings."org/gnome/shell" = {
+  #   disable-user-extensions = false;
+  #   enabled-extensions = with pkgs.gnomeextensions; [
+  #     appindicator.extensionuuid
+  #     tiling-shell.extensionuuid
+  #     # dynamic-pane.extensionuuidl
+  #     cronomix.extensionuuid
+  #     blur-my-shell.extensionuuid
+  #     gsconnect.extensionuuid
+  #   ];
+  # };
+  #
+  # environment.systemPackages = with pkgs; lib.mkAfter [
+  #   gnomeextensions
+  # ];
 
   environment.gnome.excludePackages = (with pkgs;
     [
@@ -37,7 +52,7 @@
       # gnome-maps
       gnome-console
       gnome-software
-      evince
+      # evince
       yelp
       # gnome-shell-extensions
     ]);
