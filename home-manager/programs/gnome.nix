@@ -10,9 +10,8 @@
     # gnomeExtensions.# dynamic-panel
     gnomeExtensions.cronomix
     gnomeExtensions.blur-my-shell
-    gnomeExtensions.gsconnect
+    # gnomeExtensions.gsconnect
   ];
-
 
   dconf = {
     enable = true;

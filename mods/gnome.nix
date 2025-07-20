@@ -57,6 +57,12 @@
       # gnome-shell-extensions
     ]);
 
+  # kde connect
+  programs.kdeconnect = {
+    enable = true;
+    package = pkgs.gnomeExtensions.gsconnect;
+  };
+
   # gvfs
   services.gvfs.enable = true;
 

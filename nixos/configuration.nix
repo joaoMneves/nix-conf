@@ -3,6 +3,7 @@
 {
   imports = [
     ./hardware-configuration.nix # Arquivo gerado durante a instalação
+    ./laptop.nix
   ];
 
    # Flake
@@ -88,7 +89,8 @@
   ];
   services.flatpak.packages = [
     "app.zen_browser.zen"
-    # "com.bitwarden.desktop"
+    "org.onlyoffice.desktopeditors"
+    "org.onlyoffice.desktopeditors"
     "io.ente.auth"
   ];
 
@@ -161,7 +163,5 @@
     }
   ];
 
-  system.stateVersion = "25.05"; # Did you read the comment?
-
-
+  system.stateVersion = "25.05"; 
 }
