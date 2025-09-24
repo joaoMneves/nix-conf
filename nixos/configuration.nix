@@ -6,8 +6,8 @@
     ./laptop.nix
   ];
 
-   # Flake
-  nix.settings.experimental-features = [ "nix-command" "flakes" ]; 
+  # Flake
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Bootloader 
   boot.loader.systemd-boot.enable = true;
@@ -73,6 +73,7 @@
   users.defaultUserShell = pkgs.zsh;
 
   # Serviços
+  services.tailscale.enable = true;
   services.openssh.enable = true;
   networking.networkmanager.enable = true;
   nixpkgs.config.allowUnfree = true;
@@ -81,7 +82,10 @@
   services.flatpak.enable = true;
   xdg.portal = {
     enable = true;
-    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+    extraPortals = [
+      pkgs.xdg-desktop-portal-gtk
+      pkgs.xdg-desktop-portal-gnome
+    ];
   };
   # Adicionar repositório Flathub (opcional mas recomendado)
   services.flatpak.remotes = [
@@ -163,5 +167,5 @@
     }
   ];
 
-  system.stateVersion = "25.05"; 
+  system.stateVersion = "25.05";
 }
