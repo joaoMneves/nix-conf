@@ -3,7 +3,6 @@
 {
   imports = [
     ./hardware-configuration.nix # Arquivo gerado durante a instalação
-    ./laptop.nix
   ];
 
   # Flake
@@ -38,11 +37,6 @@
     LC_TIME = "pt_BR.UTF-8";
   };
 
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "br";
-    variant = "";
-  };
 
   # Configure console keymap
   console.keyMap = "br-abnt2";
@@ -56,9 +50,7 @@
   # Pacotes básicos
   environment.systemPackages = with pkgs; [
     wget
-    flatpak
     unzip
-    wl-clipboard
     libgcc
     gccgo14
   ];
@@ -78,33 +70,12 @@
   networking.networkmanager.enable = true;
   nixpkgs.config.allowUnfree = true;
 
-  # flatpak
-  services.flatpak.enable = true;
-  xdg.portal = {
-    enable = true;
-    extraPortals = [
-      pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-gnome
-    ];
-  };
-  # Adicionar repositório Flathub (opcional mas recomendado)
-  services.flatpak.remotes = [
-    { name = "flathub"; location = "https://dl.flathub.org/repo/flathub.flatpakrepo"; }
-  ];
-  services.flatpak.packages = [
-    "app.zen_browser.zen"
-    "org.onlyoffice.desktopeditors"
-    "org.onlyoffice.desktopeditors"
-    "io.ente.auth"
-  ];
-
   # Garbage Collector
   nix.gc = {
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 7d";
   };
-
 
   # Enable CUPS to print documents.
   services.printing.enable = true;

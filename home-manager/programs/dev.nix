@@ -8,7 +8,6 @@
     lua
     python313
     python313Packages.pip
-    rustup
     lazygit
     ripgrep
     gnumake

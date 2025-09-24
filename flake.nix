@@ -6,10 +6,10 @@
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager.url = "github:nix-community/home-manager/release-25.05";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+    # nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
   };
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nix-flatpak, ... }@inputs: {
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }@inputs: {
     nixosConfigurations = {
       nixos = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -28,12 +28,12 @@
 
 
           # modulos
-          ./mods/gnome.nix
+          # ./mods/gnome.nix
 
           # Integração com o Home Manager no NixOS
           home-manager.nixosModules.home-manager
 
-          nix-flatpak.nixosModules.nix-flatpak
+          # nix-flatpak.nixosModules.nix-flatpak
 
           # Opcional: garantir que o Home Manager use os mesmos argumentos
           {
