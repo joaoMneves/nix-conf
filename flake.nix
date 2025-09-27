@@ -28,7 +28,7 @@
 
 
           # modulos
-          # ./mods/gnome.nix
+          ./mods/podman.nix
 
           # Integração com o Home Manager no NixOS
           home-manager.nixosModules.home-manager
