@@ -1,62 +1,83 @@
 {
-  description = "NixOS Configuration for João";
+  description = "nixos configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
-    nixpkgs-unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    home-manager.url = "github:nix-community/home-manager/release-25.05";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
-  };
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nur.url = "github:nix-community/NUR";
 
-  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, nix-flatpak, ... }@inputs: {
-    nixosConfigurations = {
-      nixos = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
-        modules = [
-          # Overlay para adicionar pacotes instáveis como `pkgs.unstable`
-          ({ config, pkgs, ... }: {
-            nixpkgs.overlays = [
-              (final: prev: {
-                unstable = nixpkgs-unstable.legacyPackages.x86_64-linux;
-              })
-            ];
-          })
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
-          # Módulo principal do NixOS
-          ./nixos/configuration.nix
+    hyprland.url = "github:hyprwm/Hyprland";
 
+    hypr-contrib = {
+      url = "github:hyprwm/contrib";
+      inputs.nixpkgs.follows = "hyprland/nixpkgs";
+    };
 
-          # modulos
-          ./mods/gnome.nix
+    hyprpicker = {
+      url = "github:hyprwm/hyprpicker";
+      inputs.nixpkgs.follows = "hyprland/nixpkgs";
+    };
 
-          # Integração com o Home Manager no NixOS
-          home-manager.nixosModules.home-manager
-
-          nix-flatpak.nixosModules.nix-flatpak
-
-          # Opcional: garantir que o Home Manager use os mesmos argumentos
-          {
-            home-manager.useGlobalPkgs = true;
-            # home-manager.useUserPackages = true;
-            users.users.joao.home = "/home/joao";
-            home-manager.users.joao = import home-manager/home.nix;
-          }
-        ];
-
-        specialArgs = { inherit inputs; };
+    hyprlock = {
+      url = "github:hyprwm/hyprlock";
+      inputs = {
+        hyprgraphics.follows = "hyprland/hyprgraphics";
+        hyprlang.follows = "hyprland/hyprlang";
+        hyprutils.follows = "hyprland/hyprutils";
+        nixpkgs.follows = "hyprland/nixpkgs";
+        systems.follows = "hyprland/systems";
       };
     };
 
-    homeConfigurations = {
-      "joao@nixos" = home-manager.lib.homeManagerConfiguration {
-        pkgs = import nixpkgs { system = "x86_64-linux"; };
-        extraSpecialArgs = { inherit inputs; };
-        modules = [
-          ./home-manager/home.nix
-        ];
+    # nix-gaming.url = "github:fufexan/nix-gaming";
+    nix-flatpak.url = "github:gmodena/nix-flatpak";
+
+    superfile.url = "github:yorukot/superfile";
+    vicinae.url = "github:vicinaehq/vicinae";
+    # zen-browser.url = "github:0xc000022070/zen-browser-flake";
+  };
+
+  outputs =
+    { nixpkgs, self, ... }@inputs:
+    let
+      username = "joao";
+      system = "x86_64-linux";
+      pkgs = import nixpkgs {
+        inherit system;
+        config.allowUnfree = true;
+      };
+      lib = nixpkgs.lib;
+    in
+    {
+      nixosConfigurations = {
+        desktop = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [ ./hosts/desktop ];
+          specialArgs = {
+            host = "desktop";
+            inherit self inputs username;
+          };
+        };
+        laptop = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [ ./hosts/laptop ];
+          specialArgs = {
+            host = "laptop";
+            inherit self inputs username;
+          };
+        };
+        vm = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [ ./hosts/vm ];
+          specialArgs = {
+            host = "vm";
+            inherit self inputs username;
+          };
+        };
       };
     };
-  };
 }
-
